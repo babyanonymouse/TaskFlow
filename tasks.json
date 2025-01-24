@@ -6,6 +6,27 @@
             "due_date": "2025-02-01",
             "priority": "Medium",
             "status": "Pending"
+        },
+        {
+            "title": "Learnning Python",
+            "description": "RITA Africa",
+            "due_date": "2024-01-24",
+            "priority": "High",
+            "status": "Pending"
+        },
+        {
+            "title": "Mods",
+            "description": "task mod succesfull",
+            "due_date": "2024-02-22",
+            "priority": "Medium",
+            "status": "In progress"
+        },
+        {
+            "title": "Status Modification",
+            "description": "status in modidfication",
+            "due_date": "2024-02-02",
+            "priority": "Medium",
+            "status": "In progress"
         }
     ]
 }

@@ -88,7 +88,7 @@ def view_profile(username):
     print("\n <-- VIEW PROFILE -->")
     print(f"Username: {username}")
     print("Do you want to modify your profile?: ")
-    print("1. Change Username\n 2. Change Password\n 3. Exit\n =>")
+    print("1. Change Username\n 2. Change Password\n 3. Exit\n")
     action_number = int(input("Enter the number of the action you want to perform: "))
 
     if action_number == 1:
@@ -127,6 +127,7 @@ def add_task(username):
     description = input("Enter Task Description: ").strip()
     due_date = input("Enter Due Date (YYYY-MM-DD): ").strip()
     priority = input("Enter priority (High/Medium/Low): ").strip().capitalize()
+    status = input("Enter status (Pending/Completed): ").strip().capitalize()
 
     try:
         due_date_obj = datetime.strptime(due_date, "%Y-%m-%d")
@@ -140,7 +141,7 @@ def add_task(username):
         "description": description,
         "due_date": due_date,
         "priority": priority,
-        "status": "Pending",
+        "status": status,
     }
 
     if username not in task_database:
@@ -186,48 +187,64 @@ def delete_task(username):
 
 
 # Function to modify a task
+# Function to modify a specific task
 def modify_task(username):
-    print("\n <-- MODIFY TASK -->")
-    tasks = task_database.get(username, [])
-    if not tasks:
-        print("No tasks found.")
+    if username not in task_database or not task_database[username]:
+        print("No tasks found to modify.")
         return
 
-    view_task(username)
+    print("\n<-- MODIFY TASK -->")
+    view_task(username)  # Display existing tasks for reference
+
     try:
         task_index = int(input("Enter the task number to modify: ")) - 1
-        if 0 <= task_index < len(tasks):
-            task = tasks[task_index]
-            print("Enter new task details. Leave blank to keep the same.")
-            title = input(f"Enter Task Title ({task['title']}): ").strip()
-            description = input(
-                f"Enter Task Description ({task['description']}): "
-            ).strip()
-            due_date = input(f"Enter Due Date ({task['due_date']}): ").strip()
-            priority = (
-                input(f"Enter priority ({task['priority']}): ").strip().capitalize()
-            )
-
-            if title:
-                task["title"] = title
-            if description:
-                task["description"] = description
-            if due_date:
-                try:
-                    due_date_obj = datetime.strptime(due_date, "%Y-%m-%d")
-                    task["due_date"] = due_date_obj.strftime("%Y-%m-%d")
-                except ValueError:
-                    print("Invalid date format! Task not modified.")
-                    return
-            if priority:
-                task["priority"] = priority
-
-            save_tasks()
-            print(f"Task '{task['title']}' modified successfully!")
-        else:
-            print("Invalid task number!")
+        if task_index < 0 or task_index >= len(task_database[username]):
+            print("Invalid task number. Please try again.")
+            return
     except ValueError:
-        print("Invalid input! Please enter a number.")
+        print("Invalid input. Please enter a valid number.")
+        return
+
+    task = task_database[username][task_index]
+    print("\nSelected Task:")
+    print(f"Title: {task['title']}")
+    print(f"Description: {task['description']}")
+    print(f"Due Date: {task['due_date']}")
+    print(f"Priority: {task['priority']}")
+    print(f"Status: {task['status']}")
+
+    # Allow the user to modify specific fields
+    print("\nEnter new values or press Enter to keep the current value.")
+    title = input(f"Title [{task['title']}]: ").strip() or task["title"]
+    description = (
+        input(f"Description [{task['description']}]: ").strip() or task["description"]
+    )
+    due_date = (
+        input(f"Due Date (YYYY-MM-DD) [{task['due_date']}]: ").strip()
+        or task["due_date"]
+    )
+    priority = (
+        input(f"Priority (High/Medium/Low) [{task['priority']}]: ").strip().capitalize()
+        or task["priority"]
+    )
+    status = (
+        input(f"Status (Pending/In Progress/Completed) [{task['status']}]: ")
+        .strip()
+        .capitalize()
+        or task["status"]
+    )
+
+    # Update the task
+    task_database[username][task_index] = {
+        "title": title,
+        "description": description,
+        "due_date": due_date,
+        "priority": priority,
+        "status": status,
+    }
+
+    save_tasks()
+    print("Task updated successfully!")
 
 
 # <=== MAIN PROGRAM LOOP ===> #
@@ -254,11 +271,13 @@ while True:
             print(
                 "Invalid action! Please choose 'register', 'login', 'add', or 'exit'."
             )
-            
+
     # show options for logged in user
     else:
         action = (
-            input("Choose an action (add, view, delete, modify, profile, logout): ")
+            input(
+                "Choose an action for your tasks (add, view, delete, modify, profile, logout): "
+            )
             .strip()
             .lower()
         )
