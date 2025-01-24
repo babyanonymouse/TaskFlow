@@ -1,135 +1,72 @@
-# TaskFlow
+# User Authentication and Task Management System
 
-## User Authentication and Task Management System
+## Introduction
 
-### Overview
+The User Authentication and Task Management System is a Python-based project developed during the RITA Africa Bootcamp. It offers functionalities for user registration, authentication, and task management, emphasizing user-friendly design and efficient data handling.
 
-This system allows users to register, log in, and manage tasks. After a successful login, the user can add, view, modify, or delete tasks.
+## Features
 
-### Features
+### User Management
 
-1. **User Authentication**
+- **Register**: New users can create an account by providing a username and password. Passwords must be at least 6 characters long.
+- **Login**: Existing users can log in using their credentials.
+- **Profile Management**:
+  - View Profile: Displays the current username.
+  - Change Username: Allows users to update their username.
+  - Change Password: Users can securely update their password. Password validation ensures strong and matching passwords.
 
-   - Users can register by providing a username and password.
-   - Users can log in with an existing username and password.
+### Task Management
 
-2. **Task Management**
+- **Add Task**: Users can add new tasks with the following attributes:
+  - Title
+  - Description
+  - Due Date (validated to ensure it is not a past date)
+  - Priority (High, Medium, Low)
+  - Status (Pending, In Progress, Completed)
+- **View Tasks**: Lists all tasks associated with the logged-in user.
+- **Delete Task**: Users can remove specific tasks from their list.
+- **Modify Task**: Allows users to update task details, including title, description, due date, priority, and status. The system ensures that modified due dates are not set in the past.
 
-   - Users can add tasks with a title, description, due date, and priority.
-   - Users can view their tasks.
-   - Users can modify existing tasks.
-   - Users can delete tasks.
+## How It Works
 
-3. **File Persistence**
-   - User data is stored in a file called `user_database.json`.
-   - Task data is stored in a file called `tasks.json`.
-   - The system automatically loads and saves data from/to these files.
+### For Non-Logged-In Users:
 
-### How It Works
+1. **Main Menu Options**:
+   - `register`: Calls the `register_user()` function to create a new account.
+   - `login`: Calls the `login_user()` function to authenticate an existing user.
+   - `exit`: Exits the program.
 
-#### Authentication Options
+### For Logged-In Users:
 
-When the program starts, users are presented with the following options:
+1. **Dashboard Options**:
+   - `add`: Calls the `add_task()` function to create a new task.
+   - `view`: Calls the `view_task()` function to display all tasks.
+   - `delete`: Calls the `delete_task()` function to remove a task.
+   - `modify`: Calls the `modify_task()` function to update task details.
+   - `profile`: Calls the `view_profile()` function to view or update profile details.
+   - `logout`: Logs the user out and returns them to the main menu.
 
-1. **`register`**: Registers a new user.
+## Data Management
 
-   - **Username**: The user's chosen username.
-   - **Password**: The user's chosen password (must be at least 6 characters long).
-   - **Password Confirmation**: Ensures the user has typed the password correctly.
+- **User Data**:
+  - Stored in `user_database.json`.
+  - Includes username and password.
+- **Task Data**:
+  - Stored in `tasks.json`.
+  - Includes task attributes such as title, description, due date, priority, and status.
 
-2. **`login`**: Allows an existing user to log in.
+## Security Features
 
-   - **Username**: The user's registered username.
-   - **Password**: The user's password.
+- Password validation ensures strong and secure credentials.
+- Users must confirm their current password before updating it.
+- Task due dates are validated to prevent setting tasks in the past.
 
-3. **`exit`**: Exits the program.
+## Skills Demonstrated
 
-#### Task Management Options (After Login)
+- Nested menus for a dynamic user interface.
+- Enhanced string manipulation for secure and efficient data handling.
+- Control flow using loops and conditional statements.
 
-Once logged in, the user will be able to manage their tasks with the following options:
+## Conclusion
 
-1. **`add`**: Add a new task.
-
-   - **Title**: The title of the task.
-   - **Description**: A brief description of the task.
-   - **Due Date**: The task's due date in `YYYY-MM-DD` format.
-   - **Priority**: The task's priority (`High`, `Medium`, `Low`).
-
-2. **`view`**: View all tasks assigned to the logged-in user.
-
-3. **`delete`**: Delete a task by selecting the task number.
-
-4. **`modify`**: Modify an existing task by selecting the task number and entering new details.
-
-5. **`logout`**: Logs the user out, returning to the main menu.
-
----
-
-### Instructions
-
-1. **Run the Program:**
-
-   - The program will prompt you to either `register`, `login`, or `exit`.
-   - If you are logging in, you must have a previously registered account.
-
-2. **If Logged In:**
-
-   - You will be able to manage your tasks by selecting actions such as `add`, `view`, `delete`, `modify`, or `logout`.
-
-3. **Files:**
-   - The system will automatically save and load data from two files:
-     - `user_database.json` - Stores user credentials.
-     - `tasks.json` - Stores tasks for each user.
-
----
-
-### Example Usage
-
-```bash
-Welcome to TaskFlow!
-
-Choose an action: register
-
-Enter a username: john_doe
-Enter your Password: my_password
-Confirm your password: my_password
-Registration Successful!
-
-Choose an action: login
-
-Enter your username: john_doe
-Enter your password: my_password
-Welcome back, john_doe!
-
-Choose an action: add
-Enter Task Title: Learn Python
-Enter Task Description: Complete Python tutorial
-Enter Due Date (YYYY-MM-DD): 2025-02-01
-Enter priority (High/Medium/Low): High
-Task added successfully!
-
-Choose an action: view
-Task 1:
-Title: Learn Python
-Description: Complete Python tutorial
-Due Date: 2025-02-01
-Priority: High
-Status: Pending
-
-Choose an action: logout
-Logging out john_doe...
-```
-
----
-
-### File Structure
-
-- **`user_database.json`**: Stores user credentials (username and password).
-- **`tasks.json`**: Stores tasks for each user, including title, description, due date, priority, and status.
-
----
-
-### Notes:
-
-- If the `user_database.json` or `tasks.json` files do not exist, they will be created automatically when the program is run.
-- The program checks for valid inputs, such as password length and due date format, to ensure consistency.
+This project showcases essential features of a task management system while maintaining a strong focus on user experience and data integrity. It is a beginner-friendly implementation that highlights core programming concepts in Python.
