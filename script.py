@@ -83,6 +83,43 @@ def login_user():
         return None
 
 
+# Function to view/modify profile
+def view_profile(username):
+    print("\n <-- VIEW PROFILE -->")
+    print(f"Username: {username}")
+    print("Do you want to modify your profile?: ")
+    print("1. Change Username\n 2. Change Password\n 3. Exit\n =>")
+    action_number = int(input("Enter the number of the action you want to perform: "))
+
+    if action_number == 1:
+        new_username = input("Enter new username: ").strip()
+        if new_username in user_database:
+            print("Username already exists! Try again.")
+        else:
+            user_database[new_username] = user_database.pop(username)
+            save_users()
+            print(f"Username changed to {new_username}!")
+            return new_username  # return new username
+    elif action_number == 2:
+        new_password = input("Enter new password: ").strip()
+        if len(new_password) < 6:
+            print("Password can't be less than 6 characters!")
+        else:
+            confirm_password = input("Confirm your password: ").strip()
+            if confirm_password != new_password:
+                print("Passwords don't match!")
+            else:
+                user_database[username]["password"] = new_password
+                save_users()
+                print("Password changed successfully!")
+    elif action_number == 3:
+        print("Exiting profile management ...")
+        return username  # return the same username
+    else:
+        print("Invalid action! Please choose '1', '2', or '3'.")
+    return username  # return the same username
+
+
 # Function to add a task
 def add_task(username):
     print("\n <-- ADD TASK -->")
@@ -125,6 +162,7 @@ def view_task(username):
         for key, value in task.items():
             print(f"{key.capitalize()}: {value}")
     print("\nEnd of tasks.\n")
+
 
 # Function to delete a task
 def delete_task(username):
@@ -192,17 +230,17 @@ def modify_task(username):
         print("Invalid input! Please enter a number.")
 
 
-
 # <=== MAIN PROGRAM LOOP ===> #
 logged_in_user = None
 while True:
+    print("\n --- TaskFlow ---")
+    time.sleep(0.5)
+    print("Your Tasks, Your Flow, Your Success.")
+    time.sleep(0.5)
+
+    # show options based on user login status
     if not logged_in_user:
-        print("\n --- TaskFlow ---")
-        time.sleep(0.5)
-        print("Your Tasks, Your Flow, Your Success.")
-        time.sleep(0.5)
-        print("Options: register, login, exit")
-        action = input("Choose an action: ").strip().lower()
+        action = input("Choose an action (register, login, exit): ").strip().lower()
         if action == "register":
             register_user()
         elif action == "login":
@@ -213,11 +251,18 @@ while True:
             print("Bye")
             exit()
         else:
-            print("Invalid action! Please choose 'register', 'login', 'add', or 'exit'.")
+            print(
+                "Invalid action! Please choose 'register', 'login', 'add', or 'exit'."
+            )
+            
+    # show options for logged in user
     else:
-        print(f"Welcome, {logged_in_user}!")
-        print("Options: add, view, delete, modify, logout")
-        action = input("Choose an action: ").strip().lower()
+        action = (
+            input("Choose an action (add, view, delete, modify, profile, logout): ")
+            .strip()
+            .lower()
+        )
+
         if action == "add":
             add_task(logged_in_user)
         elif action == "view":
@@ -226,8 +271,12 @@ while True:
             delete_task(logged_in_user)
         elif action == "modify":
             modify_task(logged_in_user)
+        elif action == "profile":
+            logged_in_user = view_profile(logged_in_user)
         elif action == "logout":
             print(f"Logging out {logged_in_user}...")
             logged_in_user = None
         else:
-            print("Invalid action! Please choose 'add', 'view', 'delete', 'modify', or 'logout'.")
+            print(
+                "Invalid action! Please choose 'add', 'view', 'delete', 'modify', or 'logout'."
+            )
