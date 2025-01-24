@@ -1,0 +1,11 @@
+{
+  "Samuel": {
+    "password": "someone1"
+  },
+  "sam": {
+    "password": "someone!"
+  },
+  "admin": {
+    "password": "root@admin"
+  }
+}
