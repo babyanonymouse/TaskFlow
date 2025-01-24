@@ -122,20 +122,31 @@ def view_profile(username):
 
 # Function to add a task
 def add_task(username):
-    print("\n <-- ADD TASK -->")
+    if username not in task_database:
+        task_database[username] = []
+
+    print("\n<-- ADD TASK -->")
     title = input("Enter Task Title: ").strip()
     description = input("Enter Task Description: ").strip()
-    due_date = input("Enter Due Date (YYYY-MM-DD): ").strip()
+
+    # Prompt for due date with validation
+    while True:
+        due_date = input("Enter Due Date (YYYY-MM-DD): ").strip()
+        try:
+            due_date_obj = datetime.strptime(due_date, "%Y-%m-%d")
+            if due_date_obj.date() < datetime.now().date():
+                print("The date has already passed. Please enter a future date.")
+            else:
+                break
+        except ValueError:
+            print("Invalid date format! Please use YYYY-MM-DD.")
+
     priority = input("Enter priority (High/Medium/Low): ").strip().capitalize()
-    status = input("Enter status (Pending/Completed): ").strip().capitalize()
+    status = (
+        input("Enter status (Pending/In Progress/Completed): ").strip().capitalize()
+    )
 
-    try:
-        due_date_obj = datetime.strptime(due_date, "%Y-%m-%d")
-        due_date = due_date_obj.strftime("%Y-%m-%d")
-    except ValueError:
-        print("Invalid date format! Task not added.")
-        return
-
+    # Create the task dictionary
     task = {
         "title": title,
         "description": description,
@@ -144,8 +155,7 @@ def add_task(username):
         "status": status,
     }
 
-    if username not in task_database:
-        task_database[username] = []
+    # Add the task to the user's list
     task_database[username].append(task)
     save_tasks()
     print("Task added successfully!")
@@ -186,7 +196,6 @@ def delete_task(username):
         print("Invalid input! Please enter a number.")
 
 
-# Function to modify a task
 # Function to modify a specific task
 def modify_task(username):
     if username not in task_database or not task_database[username]:
@@ -219,10 +228,24 @@ def modify_task(username):
     description = (
         input(f"Description [{task['description']}]: ").strip() or task["description"]
     )
-    due_date = (
-        input(f"Due Date (YYYY-MM-DD) [{task['due_date']}]: ").strip()
-        or task["due_date"]
-    )
+    # due_date = (
+    #     input(f"Due Date (YYYY-MM-DD) [{task['due_date']}]: ").strip()
+    #     or task["due_date"]
+    # )
+    # Prompt for due date with validation
+    while True:
+        try:
+            due_date = (
+                input(f"Due Date (YYYY-MM-DD) [{task['due_date']}]: ").strip()
+                or task["due_date"]
+            )
+            due_date_obj = datetime.strptime(due_date, "%Y-%m-%d")
+            if due_date_obj.date() < datetime.now().date():
+                print("The date has already passed. Please enter a future date.")
+            else:
+                break
+        except ValueError:
+            print("Invalid date format! Please use YYYY-MM-DD.")
     priority = (
         input(f"Priority (High/Medium/Low) [{task['priority']}]: ").strip().capitalize()
         or task["priority"]

@@ -1,32 +1,18 @@
 {
-    "Samuel": [
+    "Anonymouse": [
         {
-            "title": "Task 1",
-            "description": "adding a task",
-            "due_date": "2025-02-01",
-            "priority": "Medium",
-            "status": "Pending"
-        },
-        {
-            "title": "Learnning Python",
-            "description": "RITA Africa",
-            "due_date": "2024-01-24",
-            "priority": "High",
-            "status": "Pending"
-        },
-        {
-            "title": "Mods",
-            "description": "task mod succesfull",
-            "due_date": "2024-02-22",
+            "title": "Test",
+            "description": "testing if the task exists",
+            "due_date": "2024-01-23",
             "priority": "Medium",
             "status": "In progress"
         },
         {
-            "title": "Status Modification",
-            "description": "status in modidfication",
-            "due_date": "2024-02-02",
+            "title": "time validation",
+            "description": "check if date is correct",
+            "due_date": "2025-01-24",
             "priority": "Medium",
-            "status": "In progress"
+            "status": "Completed"
         }
     ]
 }
